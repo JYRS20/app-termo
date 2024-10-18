@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = SampleApp
+title = TermoTable
 
 # (str) Package name
-package.name = nfsApk
+package.name = TERMOTH
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.novfensec
@@ -13,7 +13,7 @@ package.domain = org.novfensec
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,csv
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = images/*.png
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.3.0,kivymd==1.1.1,pillow==10.3.0
+requirements = python3,kivy==2.3.0,kivymd==1.1.1,pillow==10.3.0,pandas==2.2.2,numpy==2.0.0
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
