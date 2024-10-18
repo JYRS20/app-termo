@@ -1,0 +1,311 @@
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+
+<ElementCard@MDCard>:
+    radius: '10dp'
+    spacing: '10dp'
+    padding: '10dp'
+    image: ''
+    text: ''
+    sub_text: ''
+    orientation: 'vertical'
+    ripple_behavior: True
+    on_release:
+        app.root.transition = RiseInTransition()
+    Image:
+        source: root.image
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDLabel:
+            text: root.text
+            halign: 'center'
+            font_style: "H4"
+        MDLabel:
+            text: root.sub_text
+            halign: 'center'
+            font_style: "Caption"
+
+<CustomizeScreen@MDBoxLayout>:
+    orientation: 'vertical'
+    text: ''
+    padding: 100
+    MDLabel:
+        text: root.text
+        halign: 'center'
+        pos_hint: {'center_x': 0.1}
+    MDRaisedButton:
+        text: 'REGRESAR'
+        pos_hint: {'center_x': 0.06}
+        on_release:
+            app.root.current = 'screen_principal'
+            app.root.transition = SlideTransition(direction='left')
+
+
+<Screen1>:
+    name: 'screen1'
+    CustomizeScreen:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(20)
+
+        MDLabel:
+            text: 'Consulta de Propiedades del Vapor de Agua'
+            halign: 'center'
+            font_style: 'H5'
+
+        MDTextField:
+            id: input_valor
+            hint_text: "Valor de temperatura o presión"
+            helper_text: "Ingrese el valor en grados Celsius o MPa/kPa"
+            helper_text_mode: "on_focus"
+            multiline: False
+
+        MDLabel:
+            text: "Selecciona el tipo de propiedad:"
+            halign: 'center'
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            spacing: dp(10)
+
+            MDRaisedButton:
+                id: boton_temperatura
+                text: "Temperatura"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_tipo_propiedad('temperatura')
+
+            MDRaisedButton:
+                id: boton_presion
+                text: "Presión"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_tipo_propiedad('presion')
+
+        MDBoxLayout:
+            id: layout_unidad_presion
+            orientation: 'horizontal'
+            spacing: dp(10)
+            size_hint_y: None
+            height: self.minimum_height
+            opacity: 0
+
+            MDRaisedButton:
+                id: boton_mpa
+                text: "MPa"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_unidad_presion('MPa')
+
+            MDRaisedButton:
+                id: boton_kpa
+                text: "kPa"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_unidad_presion('kPa')
+
+        MDRaisedButton:
+            text: "Consultar"
+            on_release: root.calcular_propiedades()
+
+        MDCard:
+            size_hint_y: None
+            height: dp(300)  # Aumentar la altura del cuadro de resultados
+            padding: dp(10)
+            orientation: 'vertical'
+
+            MDLabel:
+                id: resultado
+                text: ""
+                halign: 'center'
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: self.texture_size[1] + dp(10)
+                font_size: '16sp'  # Aumentar el tamaño de la fuente
+<Screen2>:
+    name: 'screen2'
+    CustomizeScreen:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(20)
+
+        MDLabel:
+            text: 'Propiedades del Refrigerante R-134a'
+            halign: 'center'
+            font_style: 'H4'
+
+        MDTextField:
+            id: input_valor
+            hint_text: "Valor de temperatura o presión"
+            helper_text: "Ingrese el valor en grados Celsius o kPa"
+            helper_text_mode: "on_focus"
+            multiline: False
+
+        MDLabel:
+            text: "Selecciona el tipo de propiedad:"
+            halign: "center"
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            spacing: dp(10)
+
+            MDRaisedButton:
+                id: boton_temperatura
+                text: "Temperatura"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_tipo_propiedad('temperatura')
+
+            MDRaisedButton:
+                id: boton_presion
+                text: "Presión"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_tipo_propiedad('presion')
+
+        MDBoxLayout:
+            id: layout_unidad_presion
+            orientation: 'horizontal'
+            spacing: dp(10)
+            size_hint_y: None
+            height: self.minimum_height
+            opacity: 0
+
+            MDRaisedButton:
+                id: boton_kpa
+                text: "kPa"
+                md_bg_color: 0.3, 0.3, 0.3, 1
+                on_release: root.set_unidad_presion('kPa')
+
+        MDRaisedButton:
+            text: "Consultar"
+            on_release: root.calcular_propiedades()
+
+        MDLabel:
+            text: "Resultados:"
+            halign: 'center'
+            font_style: 'H6'
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(200)  # Tamaño del cuadro de resultados
+            canvas:
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10, 10, 10, 10]  # Esquinas redondeadas
+                    source: ''  # Fondo transparente
+
+            MDLabel:
+                id: resultado
+                text: ""
+                halign: 'left'
+                valign: 'top'
+                padding: dp(10), dp(10)
+                theme_text_color: "Primary"
+
+<Screen3>:
+    name: 'screen3'
+    CustomizeScreen:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(20)
+
+        MDLabel:
+            text: 'Propiedades del Gas Ideal del Aire'
+            halign: 'center'
+            font_style: 'H4'
+
+        MDTextField:
+            id: input_valor
+            hint_text: "Ingrese la temperatura en K"
+            helper_text: "Valor de temperatura (K)"
+            helper_text_mode: "on_focus"
+            multiline: False
+
+        MDRaisedButton:
+            text: "Consultar"
+            on_release: root.calcular_propiedades()
+
+        MDLabel:
+            text: "Resultados:"
+            halign: 'center'
+            font_style: 'H6'
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(200)  # Tamaño del cuadro de resultados
+            canvas:
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10, 10, 10, 10]  # Esquinas redondeadas
+                    source: ''  # Fondo transparente
+
+            MDLabel:
+                id: resultado
+                text: ""
+                halign: 'left'
+                valign: 'top'
+                padding: dp(10), dp(10)
+                theme_text_color: "Primary"
+
+<Ui>:
+    MDScreen:
+        name: 'screen_principal'
+        md_bg_color: 0, 0.5, 0.5, 1
+        MDBoxLayout:
+            orientation: 'vertical'
+            MDBoxLayout:
+                size_hint: 1, .2
+                orientation: 'horizontal'
+                padding: '10dp'
+                MDCard:
+                    radius: '10dp'
+                    padding: '10dp'
+                    line_color: 0, 0.5, 0.5, 1
+
+                    MDLabel:
+                        text: 'TABLAS TERMODINAMICAS'
+                        halign: 'center'
+                        pos_hint: {'center_y': 0.5}
+                        font_style: "H4"
+                    MDSwitch:
+                        pos_hint: {'center_y': 0.5}
+                        on_active:
+                            app.change_style(*args)
+
+            MDGridLayout:
+                cols: 3
+                size_hint: 1, .8
+                padding: ['10dp', '10dp', '10dp', '10dp']
+                spacing: '10dp'
+
+                ElementCard:
+                    text: 'Tablas de Vapor de agua'
+                    sub_text: 'Temperatura y Presion '
+                    image: 'images/vapor.png'
+                    on_release:
+                        root.current = 'screen1'
+
+                ElementCard:
+                    text: 'Tablas R-134a'
+                    sub_text: 'Temperatura y Presion'
+                    image: 'images/r134a.png'
+                    on_release:
+                        root.current = 'screen2'
+
+                ElementCard:
+                    text: 'Gas ideal del aire'
+                    sub_text: 'Tabla por Temperatura K'
+                    image: 'images/aire.png'
+                    on_release:
+                        root.current = 'screen3'
+
+
+
+    MDScreen:
+        name: 'screen1'
+        Screen1:
+
+    MDScreen:
+        name: 'screen2'
+        Screen2:
+
+    MDScreen:
+        name: 'screen3'
+        Screen3:
